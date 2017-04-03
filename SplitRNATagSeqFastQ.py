@@ -3,7 +3,8 @@
 ## SplitRNATagSeqFastQ.py
 ## Assigns RNATagSeq reads to samples based on initial 8-nt barcode (TagRead)
 ## Inputs:
-##  - Two paired .fastq or .fastq.gz file with sequencing reads, with read pairs in corresponding positions
+##  - One .fastq.gz file with sequencing reads, 
+##  OR - Two paired .fastq.gz files with read pairs in corresponding positions
 ##  - r1 file should have TagReads at beginning (5'/left)
 ##  - tab delimited .txt file with columns (at least) SampleID, TagRead
 ##  - in principle this should harvest the P7 read information from fastq header; but it doesn't
