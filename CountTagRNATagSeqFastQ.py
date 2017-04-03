@@ -1,7 +1,7 @@
 #! python
 
-## CountTagRNATagSeq2FastQ.py
-## Counts initial 9-nt barcode (TagRead) for fastq file
+## CountTagRNATagSeqFastQ.py
+## Counts reads with every initial 9-nt sequence (barcode/TagRead) from fastq file
 ## Inputs:
 ##  - .fastq or .fastq.gz file with sequencing reads
 ##  - output file name (optional)
