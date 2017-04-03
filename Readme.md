@@ -16,6 +16,8 @@ CountTagRNATagSeqFastQ.py counts the reads in a fastq.gz with each _possible_ Ta
 
 SplitRNATagSeqFastQ.py splits (single or paired end) fastq.gz reads by RNATag in 5' end of read 1, depending on user-supplied sheet of SampleIDs and TagReads
 
+DedupEndFastQ.py removes reads with duplicate ends from (single or paired end) fastq.gz file. This is a de novo deduplexer, does not require alignment. Designed for RNATagseq with a random 3' read end. If your library lacks a random end for this purpose, or even if some transcripts are sequenced to great depth, this will disrupt your RNA-seq quantification.  
+
 data/Sample_4reads_R1.fastq.gz - Artificial sample with 4 read 1s for debugging
 
 data/Sample_4reads_R2.fastq.gz - 4 read 2s corresponding to Sample_4reads_R1.fastq.gz
@@ -40,3 +42,9 @@ python SplitRNATagSeqFastQ.py -r1 data/Sample_init10000_R1.fastq.gz -ss data/Tag
 Split paired-end:
 python SplitRNATagSeqFastQ.py -r1 data/Sample_4reads_R1.fastq.gz -r2 data/Sample_4reads_R2.fastq.gz -ss data/TagSeqBarcodedOligos2015.txt -o TestPairSplit4reads
 python SplitRNATagSeqFastQ.py -r1 data/Sample_init10000_R1.fastq.gz -r2 data/Sample_init10000_R2.fastq.gz -ss data/TagSeqBarcodedOligos2015.txt -o TestPairSplit10000
+
+Deduplicate: 
+python DedupEndFastQ.py -r1 data/Sample_4reads_R1.fastq.gz -n5 2 -n3 2 -o TestSingleDedup4reads
+python DedupEndFastQ.py -r1 data/Sample_init10000_R1.fastq.gz -o TestSingleDedup10000
+python DedupEndFastQ.py -r1 data/Sample_4reads_R1.fastq.gz -r2 data/Sample_4reads_R2.fastq.gz  -n5 2 -n3 2 -o TestPairDedup4reads
+python DedupEndFastQ.py -r1 data/Sample_init10000_R1.fastq.gz -r2 data/Sample_init10000_R2.fastq.gz -o TestPairDedup10000
