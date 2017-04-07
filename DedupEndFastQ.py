@@ -29,8 +29,8 @@ if __name__=="__main__" :
     parser = argparse.ArgumentParser(description="Demultiplex reads from fastq.gz by inline barcodes")
     parser.add_argument("-r1", "--read1",dest="r1_fn",nargs='?',help="read 1 filename in fastq.gz format")
     parser.add_argument("-r2", "--read2",dest="r2_fn",default=False,nargs='?',help="read 2 pair filename in fastq.gz format")
-    parser.add_argument("-n5", "--nnts5end",dest="n5",type=int,default=20,nargs='?',help="number of nts to use at 5' end")
-    parser.add_argument("-n3", "--nnts3end",dest="n3",type=int,default=20,nargs='?',help="number of nts to use at 3' end")
+    parser.add_argument("-n5", "--nnts5end",dest="n5",type=int,default=20,nargs='?',help="number of nts to use at 5' end of read 1")
+    parser.add_argument("-n3", "--nnts3end",dest="n3",type=int,default=20,nargs='?',help="number of nts to use at 5' end of read 2 or 3' end of read 1")
     parser.add_argument("-t", "--target", dest="target",nargs='?',default=False,help="target output filename stem")
     parser.add_argument("-o", "--outdir", dest="outdir",nargs='?',default=False,help="output directory")
     # it would be nice to have mismatches, but not necessary
@@ -109,8 +109,10 @@ if __name__=="__main__" :
             break
         if is_paired_end :
             fqrec2 = list(islice(r2_fgf, 4))
-            shortseq = fqrec1[1][:options.n5] + fqrec2[1][:-1][-options.n3:]
+            # take n5 nts from 5' end of read 1, n3 from 5' end of read 2 (3' end of fragment)
+            shortseq = fqrec1[1][:options.n5] + fqrec2[1][:options.n3]
         else :
+            # take n5 nts from 5' end of read 1, n3 from 3' end of read 1
             shortseq = fqrec1[1][:options.n5] + fqrec1[1][:-1][-options.n3:]
         
         # check if new shortseq is already there
