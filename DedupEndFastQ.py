@@ -41,17 +41,23 @@ if __name__=="__main__" :
     print "counting {} nt from 5' end and {} nt from 3' end".format(options.n5,options.n3)
     # print "allowed mismatches = {}".format(options.mismatches)
     
-    # check read 1 fastq is present, if so open it
+    # check read 1 fastq is present, if so open it as gzip or regular file
     if not os.path.isfile(options.r1_fn):
         raise IOError("# Error: read 1 file {} does not exist".format(options.r1_fn))
-    r1_fgf = gzip.open(options.r1_fn, 'rt')
+    if os.path.splitext(options.r1_fn)[1] == ".gz" :
+        r1_fgf = gzip.open(options.r1_fn, 'rt')
+    else :
+        r1_fgf = open(options.r1_fn, 'rt')
     
     # check read 2 fastq is supplied and present, if so open it
     is_paired_end = bool(options.r2_fn)
     if is_paired_end :
         if not os.path.isfile(options.r2_fn):
             raise IOError("# Error: read 2 file {} does not exist".format(options.r2_fn))
-        r2_fgf = gzip.open(options.r2_fn, 'rt')
+        if os.path.splitext(options.r2_fn)[1] == ".gz" :
+            r2_fgf = gzip.open(options.r2_fn, 'rt')
+        else :
+            r2_fgf = open(options.r2_fn, 'rt')
     
     # import pdb; pdb.set_trace()
     
@@ -77,11 +83,19 @@ if __name__=="__main__" :
         r1outname = options.outdir + "/" + r1outname
         if is_paired_end :
             r2outname = options.outdir  + "/" + r2outname
+    
     # make one output file
-    r1_out = gzip.open(r1outname,"wt")
+    if os.path.splitext(r1outname)[1] == ".gz" :
+        r1_out = gzip.open(r1outname,"wt")
+    else :
+        r1_out = open(r1outname, "wt")
+    
     if is_paired_end :
         # make an output file for each paired read
-        r2_out = gzip.open(r2outname,"wt")
+        if os.path.splitext(r2outname)[1] == ".gz" :
+            r2_out = gzip.open(r2outname,"wt")
+        else :
+            r2_out = open(r2outname, "wt")
     
     ntotreads = 0 # counts reads
     ndups = 0 # counts duplicates
@@ -112,7 +126,7 @@ if __name__=="__main__" :
         # count number of processed reads, output every millionth
         ntotreads += 1
         if (ntotreads % 1000000) == 0:
-            print "{} reads read".format(ntotreads)
+            print "{} reads processed".format(ntotreads)
     
     print "removed {} duplicates from {} reads".format(ndups,ntotreads)
     
