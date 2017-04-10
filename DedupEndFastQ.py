@@ -3,18 +3,20 @@
 ## DedupEndFastQ.py
 ## Removes duplicate-ended reads from fastq.gz file
 ## Inputs:
-##  - One .fastq.gz file with sequencing reads, 
-##  OR - Two paired .fastq.gz files with read pairs in corresponding positions
-## - n5 and n3, the number of nts at each end of the read to use for deduplication
+##  - r1, One .fastq.gz file with sequencing reads, 
+##  OR - Two paired .fastq.gz files with read pairs in corresponding positions (r1, r2) 
+##  - n5 and n3, the number of nts at each end of the read to use for deduplication
+##  - target, base-name of taget file
+##  - outdir, directory in which to put output file
 ##
 ## Outputs:
-##  - a deduplicated file for each out. 
+##  - a deduplicated fastq.gz file for each input. 
 ## 
 ## This is not designed to be memory-efficient.
 ## 
 ## Edward Wallace ewjwallace@gmail.com, 2017
 
-import sys, os, csv, gzip, shutil, argparse
+import sys, os, csv, gzip, shutil, argparse, warnings
 from itertools import islice
 
 if __name__=="__main__" :    
