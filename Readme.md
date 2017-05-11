@@ -1,5 +1,6 @@
 # pyRNATagSeq
-For counting and splitting RNATagSeq reads.
+
+For counting and splitting RNATagSeq reads with inline barcodes ("TagReads") in read 1. In general, will sort (single- or paired-end) fastq.gz files by user- supplied sequences at the 5' end of read 1, with mismatches.
 
 Edward Wallace, ewjwallace@gmail.com, 2017.
 https://github.com/ewallace
@@ -10,9 +11,14 @@ Edward Wallace's mild updates to the library prep protocol are at: http://drummo
 
 I wrote this because fastx_barcode_splitter, from fastx-toolkit, was prohibitively slow.
 
+Known limitations: 
+
+  - if barcode/TagReads are too long, CountTagRNATagSeqFastQ will probably use up too much memory or crash.
+  - if #mismatches is less than the Hamming distance between TagReads, SplitRNATagSeqFastQ.py will assign reads to the first TagRead supplied, NOT the closest.
+
 ## Contents
 
-CountTagRNATagSeqFastQ.py counts the reads in a fastq.gz with each _possible_ TagRead. Useful for debugging and counting mismatches.
+CountTagRNATagSeqFastQ.py counts the reads in a fastq.gz with each _possible_ TagRead (5' end) of chosen length. Useful for debugging and counting mismatches.
 
 SplitRNATagSeqFastQ.py splits (single or paired end) fastq.gz reads by RNATag in 5' end of read 1, depending on user-supplied sheet of SampleIDs and TagReads
 
@@ -32,14 +38,19 @@ data/TagSeqBarcodedOligos2015.txt - TagSeq barcoded oligos used in Shishkin et a
 ## Examples
 
 Count:
+
 python CountTagRNATagSeqFastQ.py -o Sample_4reads_TagCounts.txt data/Sample_4reads_R1.fastq.gz
+
 python CountTagRNATagSeqFastQ.py -o Sample_10000_TagCounts.txt data/Sample_init10000_R1.fastq.gz
 
 Split single-end:
+
 python SplitRNATagSeqFastQ.py -r1 data/Sample_4reads_R1.fastq.gz -ss data/TagSeqBarcodedOligos2015.txt -o TestSingleSplit4reads
+
 python SplitRNATagSeqFastQ.py -r1 data/Sample_init10000_R1.fastq.gz -ss data/TagSeqBarcodedOligos2015.txt -o TestSingleSplit10000
 
 Split paired-end:
+
 python SplitRNATagSeqFastQ.py -r1 data/Sample_4reads_R1.fastq.gz -r2 data/Sample_4reads_R2.fastq.gz -ss data/TagSeqBarcodedOligos2015.txt -o TestPairSplit4reads
 python SplitRNATagSeqFastQ.py -r1 data/Sample_init10000_R1.fastq.gz -r2 data/Sample_init10000_R2.fastq.gz -ss data/TagSeqBarcodedOligos2015.txt -o TestPairSplit10000
 
