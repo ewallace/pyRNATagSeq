@@ -80,7 +80,7 @@ if __name__=="__main__" :
     if (options.kallistoindex) : 
         # kallisto quant
         sys.stdout.write("kallisto quantification of" + options.filestem + "\n")
-        os.system("kallisto quant --rf-stranded -t 4 -i " + options.kallistoindex + \
+        os.system("kallisto quant --rf-stranded -t 4 -b 50 -i " + options.kallistoindex + \
         " -o " + ftarget_kallisto + " " + \
         ftarget_trim + "_1.fastq " + ftarget_trim + "_2.fastq ")
         sys.stdout.write("kallisto quantification finished\n")
@@ -106,12 +106,12 @@ if __name__=="__main__" :
         ## calculate genome coverage for plus strand, compress it
         sys.stdout.write("calculating genome coverage on plus strand\n")
         os.system("bedtools genomecov -ibam " + ftarget_bam + \
-        ".bam -bga -pc -split -strand + | gzip > " + ftarget_bam + \
+        ".bam -bga -pc -strand + | gzip > " + ftarget_bam + \
         "_plus.bedgraph.gz")
         ## calculate genome coverage for minus strand, compress it
         sys.stdout.write("calculating genome coverage on minus strand\n")
         os.system("bedtools genomecov -ibam " + ftarget_bam + \
-        ".bam -bga -pc -split -strand - | gzip > " + ftarget_bam + \
+        ".bam -bga -pc -strand - | gzip > " + ftarget_bam + \
         "_minus.bedgraph.gz")
     
     sys.stdout.write("CutDedupTrimQuant DONE for " + options.filestem + "\n")
