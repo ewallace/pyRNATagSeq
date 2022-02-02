@@ -15,6 +15,8 @@ Known limitations:
 
   - if barcode/TagReads are too long, CountTagRNATagSeqFastQ will probably use up too much memory or crash.
   - if #mismatches is less than the Hamming distance between TagReads, SplitRNATagSeqFastQ.py will assign reads to the first TagRead supplied, NOT the closest.
+  - runs on Python 2, and has not been tested on Python 3
+  - not under active development since 2017
 
 ## Contents
 
